@@ -22,6 +22,9 @@ public class loginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
+
+        //Button to exit the application.
         exitButton.setOnAction((event) -> {
             Stage stage = (Stage) exitButton.getScene().getWindow();
             stage.close();
