@@ -23,6 +23,10 @@ public class loginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
 
+        //Button to login to the application.
+        loginButton.setOnAction((event)->{
+
+        });
 
         //Button to exit the application.
         exitButton.setOnAction((event) -> {
