@@ -1,17 +1,29 @@
 package sample.Models;
 
+import java.util.UUID;
+
 public class User {
+    private UUID Userid;
     private String name;
     private String pass;
     private boolean adminRights;
 
-    public User(String name, String pass, boolean adminRights){
+    public User(UUID Userid, String name, String pass, boolean adminRights){
+        this.Userid = Userid;
         this.name = name;
         this.pass = pass;
         this.adminRights = adminRights;
     }
 
     public User(){}
+
+    public UUID getUserid() {
+        return Userid;
+    }
+
+    public void setUserid(UUID userid) {
+        Userid = userid;
+    }
 
     public String getName() {
         return name;

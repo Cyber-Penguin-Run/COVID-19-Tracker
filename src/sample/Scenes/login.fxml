@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,10 +19,6 @@
                <font>
                   <Font size="16.0" />
                </font></JFXTextField>
-            <JFXTextField fx:id="passwordText" labelFloat="true" layoutX="98.0" layoutY="207.0" prefHeight="26.0" prefWidth="167.0" promptText="Password">
-               <font>
-                  <Font size="16.0" />
-               </font></JFXTextField>
             <Label layoutX="76.0" layoutY="28.0" text="COVID-19 Outbreak Tracker">
                <font>
                   <Font size="17.0" />
@@ -29,6 +26,11 @@
             </Label>
             <Label layoutX="21.0" layoutY="382.0" text="By Zimin Chen for CIS-3368 25072 Prof. Lindner Final Project" />
             <JFXButton fx:id="exitButton" buttonType="RAISED" defaultButton="true" layoutX="135.0" layoutY="340.0" prefHeight="26.0" prefWidth="94.0" ripplerFill="WHITE" style="-fx-background-color: Gray;" text="Exit" textFill="WHITE" />
+            <JFXPasswordField fx:id="passwordText" layoutX="99.0" layoutY="188.0" prefHeight="25.0" prefWidth="167.0" promptText="Password">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </JFXPasswordField>
          </children>
       </AnchorPane>
    </children>
