@@ -96,7 +96,7 @@ public class loginController implements Initializable {
         FXMLLoader userLoader = new FXMLLoader();
         userLoader.setLocation(getClass().getResource("../Scenes/mainpage.fxml"));
         Parent covidTrackParent = userLoader.load();
-        Scene covidTrackScene = new Scene(covidTrackParent,781, 539);
+        Scene covidTrackScene = new Scene(covidTrackParent,1011, 529);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setTitle("Covid Tracker Main Page");
         window.setScene(covidTrackScene);
