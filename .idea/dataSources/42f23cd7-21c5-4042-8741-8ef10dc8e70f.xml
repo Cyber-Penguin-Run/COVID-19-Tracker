@@ -934,26 +934,45 @@
       <Position>6</Position>
       <DataType>int|0s</DataType>
     </column>
-    <key id="294" parent="286" name="PRIMARY">
+    <column id="294" parent="286" name="UserId">
+      <Position>7</Position>
+      <DataType>varchar(36)|0s</DataType>
+    </column>
+    <index id="295" parent="286" name="CovidCount_Users_UserId_fk">
+      <ColNames>UserId</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="296" parent="286" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>Id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="295" parent="287" name="UserId">
+    <foreign-key id="297" parent="286" name="CovidCount_Users_UserId_fk">
+      <ColNames>UserId</ColNames>
+      <RefTableName>Users</RefTableName>
+      <RefColNames>UserId</RefColNames>
+    </foreign-key>
+    <column id="298" parent="287" name="UserId">
       <Position>1</Position>
-      <DataType>varchar(38)|0s</DataType>
+      <DataType>varchar(36)|0s</DataType>
+      <NotNull>1</NotNull>
     </column>
-    <column id="296" parent="287" name="Password">
+    <column id="299" parent="287" name="Password">
       <Position>2</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="297" parent="287" name="Administrator">
+    <column id="300" parent="287" name="Administrator">
       <Position>3</Position>
       <DataType>tinyint(1)|0s</DataType>
     </column>
-    <column id="298" parent="287" name="Username">
+    <column id="301" parent="287" name="Username">
       <Position>4</Position>
       <DataType>text|0s</DataType>
     </column>
+    <key id="302" parent="287" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>UserId</ColNames>
+      <Primary>1</Primary>
+    </key>
   </database-model>
 </dataSource>

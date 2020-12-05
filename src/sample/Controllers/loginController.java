@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 public class loginController implements Initializable {
 
@@ -45,11 +46,13 @@ public class loginController implements Initializable {
             Statement logstmt = (Statement) logConn.createStatement();
             String selectUsers = "SELECT * FROM Users";
             ResultSet rsUser = logstmt.executeQuery(selectUsers);
+            ArrayList<String> useridList = new ArrayList<String>();
             ArrayList<String> userList = new ArrayList<String>();
             ArrayList<String> passwordList = new ArrayList<String>();
             ArrayList<Boolean> adminList = new ArrayList<Boolean>();
             //Credit to Bart1612 from Stackoverflow.
             while(rsUser.next()){
+                useridList.add(rsUser.getString("UserId"));
                 userList.add(rsUser.getString("Username"));
                 passwordList.add(rsUser.getString("Password"));
                 adminList.add(rsUser.getBoolean("Administrator"));
@@ -61,7 +64,7 @@ public class loginController implements Initializable {
             for (int i = 0; i <= userList.size(); i++){
                 if (usernameText.getText().equals(userList.get(i)) && passwordText.getText().equals(passwordList.get(i))){
                     User user = new User();
-                    //user.setUserId();
+                    user.setUserId(useridList.get(i));
                     user.setName(userList.get(i));
                     user.setPass(passwordList.get(i));
                     user.setAdminRights(adminList.get(i));
@@ -70,6 +73,7 @@ public class loginController implements Initializable {
                     successAlert.setHeaderText("You have logged in. Please click \"Continue\".");
                     successAlert.show();
                     continButton.setVisible(true);
+                    System.out.println(user.getUserId());
                 }
                 else{
                     Alert invalidLogAlert = new Alert(Alert.AlertType.ERROR);
@@ -82,20 +86,22 @@ public class loginController implements Initializable {
         }catch(Exception ex){
             Alert serverError = new Alert(Alert.AlertType.ERROR);
             serverError.setTitle("Error!");
-            serverError.setHeaderText("You are not connected to the AWS Server!B");
+            serverError.setHeaderText("You are not connected to the AWS Server!");
         }
     }
 
     //Method to change to another scene, credit to Jaret Wright on Youtube.
     @FXML
     private void sceneChange(ActionEvent event) throws IOException {
-        Parent covidTrackParent = FXMLLoader.load(getClass().getResource("../Scenes/mainpage.fxml"));
-        Scene covidTrackScene = new Scene(covidTrackParent,600, 400);
+        FXMLLoader userLoader = new FXMLLoader();
+        userLoader.setLocation(getClass().getResource("../Scenes/mainpage.fxml"));
+        Parent covidTrackParent = userLoader.load();
+        Scene covidTrackScene = new Scene(covidTrackParent,781, 539);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setTitle("Covid Tracker Main Page");
         window.setScene(covidTrackScene);
         window.show();
-    }
+    }//end of credit.
 
 
     @Override
