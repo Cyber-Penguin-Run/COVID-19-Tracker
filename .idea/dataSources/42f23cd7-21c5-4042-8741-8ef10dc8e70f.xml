@@ -924,15 +924,15 @@
     </column>
     <column id="291" parent="286" name="TotalCases">
       <Position>4</Position>
-      <DataType>int|0s</DataType>
+      <DataType>text|0s</DataType>
     </column>
     <column id="292" parent="286" name="TotalDeaths">
       <Position>5</Position>
-      <DataType>int|0s</DataType>
+      <DataType>text|0s</DataType>
     </column>
     <column id="293" parent="286" name="NewCases">
       <Position>6</Position>
-      <DataType>int|0s</DataType>
+      <DataType>text|0s</DataType>
     </column>
     <column id="294" parent="286" name="UserId">
       <Position>7</Position>
