@@ -1,15 +1,17 @@
 package sample.Models;
 
 
+import java.util.UUID;
+
 public class Country {
-    private String countryid;
+    private UUID countryid;
     private String name;
     private String date;
     private String TotCase;
     private String TotDeaths;
     private String NewCase;
 
-    public void Country(String countryid, String name, String date, String TotCase, String TotDeaths, String NewCase){
+    public void Country(UUID countryid, String name, String date, String TotCase, String TotDeaths, String NewCase){
         this.countryid = countryid;
         this.name = name;
         this.date = date;
@@ -22,11 +24,11 @@ public class Country {
 
     }
 
-    public String getCountryid() {
+    public UUID getCountryid() {
         return countryid;
     }
 
-    public void setCountryid(String countryid) {
+    public void setCountryid(UUID countryid) {
         this.countryid = countryid;
     }
 
@@ -69,4 +71,5 @@ public class Country {
     public void setNewCase(String newCase) {
         NewCase = newCase;
     }
+
 }

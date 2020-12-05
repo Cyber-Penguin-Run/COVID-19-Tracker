@@ -9,12 +9,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import org.json.JSONObject;
 import sample.Models.Country;
+import sample.Models.User;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -131,7 +133,7 @@ public class mainpageController implements Initializable{
             JSONObject countryresponse= new JSONObject(response.toString());
 
             //Inserting values into Country object
-            searchCountry.setCountryid(String.valueOf(UUID.randomUUID().toString()));
+            searchCountry.setCountryid(UUID.randomUUID());
             searchCountry.setName(countryresponse.getString("Country_text"));
             searchCountry.setDate(String.valueOf(java.time.LocalDate.now()));
             searchCountry.setTotCase(countryresponse.getString("Total Cases_text"));
@@ -140,17 +142,25 @@ public class mainpageController implements Initializable{
 
             //Connecting to SQL database.
             Connection conn = (Connection) DriverManager.getConnection(sqlurl, username, password);
-            //Inserting objects from list to table. Credit to Alvin Alexander on alvinalexander.com
-            String query = " insert into CovidCount (Id, CountryName, Date, TotalCases, TotalDeaths, NewCases)"
-                    + " values (?, ?, ?, ?, ?, ?)";
-            PreparedStatement pStmt = (PreparedStatement) conn.prepareStatement(query);
+            Statement stmt = (Statement)conn.createStatement();
+            String selectUserID = "SELECT UserId FROM Users";
+            ResultSet rs = stmt.executeQuery(selectUserID);
+            User user = new User();
+            while(rs.next()) {
+                user.setUserId(rs.getString(1));
+            }
 
-            pStmt.setString(1, searchCountry.getCountryid());
+            //Inserting objects from list to table. Credit to Alvin Alexander on alvinalexander.com
+            String query = " insert into CovidCount (Id, CountryName, Date, TotalCases, TotalDeaths, NewCases, UserId)"
+                    + " values (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pStmt = (PreparedStatement) conn.prepareStatement(query);
+            pStmt.setString(1, searchCountry.getCountryid().toString());
             pStmt.setString(2, searchCountry.getName());
             pStmt.setString(3, searchCountry.getDate());
             pStmt.setString(4, searchCountry.getTotCase());
             pStmt.setString(5, searchCountry.getTotDeaths());
             pStmt.setString(6, searchCountry.getNewCase());
+            pStmt.setString(7, user.getUserId());
             //execute prepared statment.
             pStmt.execute();
             //closing prepare statment.
@@ -159,10 +169,10 @@ public class mainpageController implements Initializable{
             conn.close();
 
         }catch(Exception e){
-            Alert invalidCountry = new Alert(Alert.AlertType.ERROR);
+            /*Alert invalidCountry = new Alert(Alert.AlertType.ERROR);
             invalidCountry.setTitle("Error");
             invalidCountry.setHeaderText("Must provide country name.");
-            invalidCountry.show();
+            invalidCountry.show();*/
         }
 
 
