@@ -3,13 +3,13 @@ package sample.Models;
 import java.util.UUID;
 
 public class User {
-    private UUID Userid;
+    private UUID userId;
     private String name;
     private String pass;
     private boolean adminRights;
 
-    public User(UUID Userid, String name, String pass, boolean adminRights){
-        this.Userid = Userid;
+    public User(UUID userId, String name, String pass, boolean adminRights){
+        this.userId = userId;
         this.name = name;
         this.pass = pass;
         this.adminRights = adminRights;
@@ -17,12 +17,12 @@ public class User {
 
     public User(){}
 
-    public UUID getUserid() {
-        return Userid;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUserid(UUID userid) {
-        Userid = userid;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getName() {

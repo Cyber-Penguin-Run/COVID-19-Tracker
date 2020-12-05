@@ -1,22 +1,27 @@
 package sample.Controllers;
 
 import com.mysql.jdbc.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import sample.Models.User;
-
+import java.io.IOException;
 import java.net.URL;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
-import java.util.UUID;
 
 public class loginController implements Initializable {
 
     //Button on the login.fxml
+    @FXML
+    private Button continButton;
     @FXML
     private Button loginButton;
     @FXML
@@ -56,33 +61,48 @@ public class loginController implements Initializable {
             for (int i = 0; i <= userList.size(); i++){
                 if (usernameText.getText().equals(userList.get(i)) && passwordText.getText().equals(passwordList.get(i))){
                     User user = new User();
-                    user.setUserid(UUID.randomUUID());
+                    //user.setUserId();
                     user.setName(userList.get(i));
                     user.setPass(passwordList.get(i));
                     user.setAdminRights(adminList.get(i));
-                    Alert a = new Alert(Alert.AlertType.INFORMATION);
-                    a.setTitle("Success!");
-                    a.setHeaderText("You have logged in.");
-                    a.show();
-                    System.out.println(user.getUserid());
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Success!");
+                    successAlert.setHeaderText("You have logged in. Please click \"Continue\".");
+                    successAlert.show();
+                    continButton.setVisible(true);
                 }
                 else{
-                    Alert a = new Alert(Alert.AlertType.INFORMATION);
-                    a.setTitle("Error!");
-                    a.setHeaderText("Invalid Login.");
-                    a.show();
+                    Alert invalidLogAlert = new Alert(Alert.AlertType.ERROR);
+                    invalidLogAlert.setTitle("Error!");
+                    invalidLogAlert.setHeaderText("Invalid Login.");
+                    invalidLogAlert.show();
                 }
             }
 
-
         }catch(Exception ex){
-
+            Alert serverError = new Alert(Alert.AlertType.ERROR);
+            serverError.setTitle("Error!");
+            serverError.setHeaderText("You are not connected to the AWS Server!B");
         }
-
     }
+
+    //Method to change to another scene, credit to Jaret Wright on Youtube.
+    @FXML
+    private void sceneChange(ActionEvent event) throws IOException {
+        Parent covidTrackParent = FXMLLoader.load(getClass().getResource("../Scenes/mainpage.fxml"));
+        Scene covidTrackScene = new Scene(covidTrackParent,600, 400);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setTitle("Covid Tracker Main Page");
+        window.setScene(covidTrackScene);
+        window.show();
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        //Hiding the continue button on start.
+        continButton.setVisible(false);
 
 
         //Button to login to the application.

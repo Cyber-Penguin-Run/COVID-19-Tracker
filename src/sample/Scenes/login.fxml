@@ -12,25 +12,26 @@
 
 <GridPane alignment="center" hgap="10" prefHeight="413.0" prefWidth="361.0" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.loginController">
    <children>
-      <AnchorPane prefHeight="420.0" prefWidth="378.0">
+      <AnchorPane fx:id="loginPane" prefHeight="420.0" prefWidth="378.0">
          <children>
-            <JFXButton fx:id="loginButton" buttonType="RAISED" defaultButton="true" layoutX="134.0" layoutY="291.0" prefHeight="26.0" prefWidth="94.0" ripplerFill="WHITE" style="-fx-background-color: Gray;" text="Login" textFill="WHITE" />
-            <JFXTextField fx:id="usernameText" labelFloat="true" layoutX="97.0" layoutY="117.0" prefHeight="26.0" prefWidth="167.0" promptText="Username">
-               <font>
-                  <Font size="16.0" />
-               </font></JFXTextField>
             <Label layoutX="76.0" layoutY="28.0" text="COVID-19 Outbreak Tracker">
                <font>
                   <Font size="17.0" />
                </font>
             </Label>
-            <Label layoutX="21.0" layoutY="382.0" text="By Zimin Chen for CIS-3368 25072 Prof. Lindner Final Project" />
-            <JFXButton fx:id="exitButton" buttonType="RAISED" defaultButton="true" layoutX="135.0" layoutY="340.0" prefHeight="26.0" prefWidth="94.0" ripplerFill="WHITE" style="-fx-background-color: Gray;" text="Exit" textFill="WHITE" />
+            <JFXTextField fx:id="usernameText" labelFloat="true" layoutX="97.0" layoutY="117.0" prefHeight="26.0" prefWidth="167.0" promptText="Username">
+               <font>
+                  <Font size="16.0" />
+               </font></JFXTextField>
             <JFXPasswordField fx:id="passwordText" layoutX="99.0" layoutY="188.0" prefHeight="25.0" prefWidth="167.0" promptText="Password">
                <font>
                   <Font size="16.0" />
                </font>
             </JFXPasswordField>
+            <JFXButton fx:id="loginButton" buttonType="RAISED" defaultButton="true" layoutX="134.0" layoutY="242.0" prefHeight="26.0" prefWidth="94.0" ripplerFill="WHITE" style="-fx-background-color: Gray;" text="Login" textFill="WHITE" />
+            <JFXButton fx:id="continButton" buttonType="RAISED" defaultButton="true" layoutX="136.0" layoutY="291.0" onAction="#sceneChange" prefHeight="26.0" prefWidth="94.0" ripplerFill="WHITE" style="-fx-background-color: Gray;" text="Continue" textFill="WHITE" />
+            <JFXButton fx:id="exitButton" buttonType="RAISED" defaultButton="true" layoutX="135.0" layoutY="340.0" prefHeight="26.0" prefWidth="94.0" ripplerFill="WHITE" style="-fx-background-color: Gray;" text="Exit" textFill="WHITE" />
+            <Label layoutX="21.0" layoutY="382.0" text="By Zimin Chen for CIS-3368 25072 Prof. Lindner Final Project" />
          </children>
       </AnchorPane>
    </children>
