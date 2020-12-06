@@ -1,5 +1,7 @@
-Libraries used:
+Java version:
 jdk-12.0.2
+
+Libraries used:
 javafx-sdk-12.0.2
 mysql-connector.java-5.1.49
 jfoenix-9.0.10.jar
