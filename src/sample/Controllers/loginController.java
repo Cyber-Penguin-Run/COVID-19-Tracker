@@ -58,9 +58,7 @@ public class loginController implements Initializable {
                 adminList.add(rsUser.getBoolean("Administrator"));
             }
             //End of credit to Bart1612 from Stackoverflow.
-            //testing what the object has System.out.println(userList);
-            //testing what the object has System.out.println(passwordList);
-            //testing what the object has System.out.println(adminList);
+
             for (int i = 0; i <= userList.size(); i++){
                 if (usernameText.getText().equals(userList.get(i)) && passwordText.getText().equals(passwordList.get(i))){
                     User user = new User();
@@ -73,7 +71,6 @@ public class loginController implements Initializable {
                     successAlert.setHeaderText("You have logged in. Please click \"Continue\".");
                     successAlert.show();
                     continButton.setVisible(true);
-                    //testing what the object has System.out.println(user.getUserId());
                 }
                 else{
                     Alert invalidLogAlert = new Alert(Alert.AlertType.ERROR);
