@@ -140,5 +140,10 @@
          </children>
       </HBox>
       <Label layoutX="536.0" layoutY="458.0" text="Select row on table then click &quot;delete&quot;." />
+      <JFXButton fx:id="graphButton" buttonType="RAISED" layoutX="852.0" layoutY="370.0" onAction="#sceneChange" prefHeight="37.0" prefWidth="128.0" ripplerFill="WHITE" style="-fx-background-color: Gray;" text="Graph" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </JFXButton>
    </children>
 </AnchorPane>

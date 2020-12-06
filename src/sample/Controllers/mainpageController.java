@@ -5,11 +5,16 @@ import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import org.json.JSONObject;
 import sample.Models.Country;
 import sample.Models.CountrySnap;
@@ -17,6 +22,7 @@ import sample.Models.User;
 
 import javax.xml.transform.Result;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -60,6 +66,8 @@ public class mainpageController implements Initializable {
     private Button saveButton;
     @FXML
     private Button deleteButton;
+    @FXML
+    private Button graphButton;
 
     //Textfield from mainpage.fxml
     @FXML
@@ -234,6 +242,19 @@ public class mainpageController implements Initializable {
         }
     }
 
+    //Method to change to another scene, inspired by Jaret Wright on Youtube.
+    @FXML
+    private void sceneChange(ActionEvent event) throws IOException {
+        FXMLLoader userLoader = new FXMLLoader();
+        userLoader.setLocation(getClass().getResource("../Scenes/bargraph.fxml"));
+        Parent covidGraphParent = userLoader.load();
+        Scene covidGraphScene = new Scene(covidGraphParent,702, 593);
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setTitle("COVID-19 Tracker Bar Graph");
+        window.setScene(covidGraphScene);
+        window.show();
+    }//end of credit.
+
 
 
     @Override
@@ -289,6 +310,7 @@ public class mainpageController implements Initializable {
             }
 
         });
+
 
     }
 }

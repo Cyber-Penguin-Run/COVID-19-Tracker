@@ -103,7 +103,7 @@ public class loginController implements Initializable {
         Parent covidTrackParent = userLoader.load();
         Scene covidTrackScene = new Scene(covidTrackParent,1124, 529);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setTitle("Covid Tracker Main Page");
+        window.setTitle("COVID-19 Tracker Main Menu");
         window.setScene(covidTrackScene);
         window.show();
     }//end of credit.
