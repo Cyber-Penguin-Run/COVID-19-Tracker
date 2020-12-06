@@ -3,12 +3,16 @@ package sample.Controllers;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.json.JSONObject;
 import sample.Models.Country;
+import sample.Models.CountrySnap;
 import sample.Models.User;
 
 import java.io.BufferedReader;
@@ -17,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
@@ -61,9 +66,20 @@ public class mainpageController implements Initializable{
 
     //Table from mainpage.fxml
     @FXML
-    private TableView covidTableView;
+    private TableView<CountrySnap> covidTableView;
 
+    @FXML
+    private TableColumn<CountrySnap, String> countryCol;
+    @FXML
+    private TableColumn<CountrySnap, String> dateCol;
+    @FXML
+    private TableColumn<CountrySnap, String> totcaseCol;
+    @FXML
+    private TableColumn<CountrySnap, String> totdeathCol;
+    @FXML
+    private TableColumn<CountrySnap, String> dcaseCol;
 
+    //Method to read from JSON GET and to set lables to respective values.
     private void readJson(String uInput, String url, String apikey) {
         try {
             //Credit to jinu jawad m on Youtube.
@@ -107,6 +123,7 @@ public class mainpageController implements Initializable{
 
     }
 
+    //Method to Save a snapshot of the JSON GET.
     private void saveCountry(String uInput, String apiurl, String apikey, String sqlurl, String username, String password){
         //GET request from API and creating country object.
         try {
@@ -140,14 +157,14 @@ public class mainpageController implements Initializable{
             searchCountry.setTotDeaths(countryresponse.getString("Total Deaths_text"));
             searchCountry.setNewCase(countryresponse.getString("New Cases_text"));
 
-            //Connecting to SQL database.
+            //Connecting to SQL database and getting the pre-made user UUID.
             Connection conn = (Connection) DriverManager.getConnection(sqlurl, username, password);
             Statement stmt = (Statement)conn.createStatement();
             String selectUserID = "SELECT UserId FROM Users";
             ResultSet rs = stmt.executeQuery(selectUserID);
             User user = new User();
             while(rs.next()) {
-                user.setUserId(rs.getString(1));
+                user.setUserId(UUID.fromString(rs.getString(1)));
             }
 
             //Inserting objects from list to table. Credit to Alvin Alexander on alvinalexander.com
@@ -160,27 +177,56 @@ public class mainpageController implements Initializable{
             pStmt.setString(4, searchCountry.getTotCase());
             pStmt.setString(5, searchCountry.getTotDeaths());
             pStmt.setString(6, searchCountry.getNewCase());
-            pStmt.setString(7, user.getUserId());
-            //execute prepared statment.
+            pStmt.setString(7, user.getUserId().toString());
             pStmt.execute();
-            //closing prepare statment.
+
+            //closing connections.
             pStmt.close();
-            //closing connections
+            rs.close();
+            stmt.close();
             conn.close();
 
         }catch(Exception e){
-            /*Alert invalidCountry = new Alert(Alert.AlertType.ERROR);
+            Alert invalidCountry = new Alert(Alert.AlertType.ERROR);
             invalidCountry.setTitle("Error");
             invalidCountry.setHeaderText("Must provide country name.");
-            invalidCountry.show();*/
+            invalidCountry.show();
         }
 
 
     }
 
+    //Method for a ObservableList, inspired by Jaret Wright on Youtube.
+    public ObservableList<CountrySnap> getCountry() throws SQLException {
+        ObservableList<CountrySnap> countries = FXCollections.observableArrayList();
+        Connection conn = (Connection) DriverManager.getConnection(hostname, rdbusername, rdbpassword);
+        Statement stmt = (Statement)conn.createStatement();
+        String selectdata = "SELECT * FROM CovidCount";
+        ResultSet rs = stmt.executeQuery(selectdata);
+        while(rs.next()){
+            countries.add(new CountrySnap(rs.getString("CountryName"),rs.getString("Date"),rs.getString("TotalCases"),rs.getString("TotalDeaths"), rs.getString("NewCases")));
+        }
+
+
+        return countries;
+    }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        countryCol.setCellValueFactory(new PropertyValueFactory<CountrySnap, String>("countrySnap"));
+        dateCol.setCellValueFactory(new PropertyValueFactory<CountrySnap, String>("dateSnap"));
+        totcaseCol.setCellValueFactory(new PropertyValueFactory<CountrySnap, String>("totcaseSnap"));
+        totdeathCol.setCellValueFactory(new PropertyValueFactory<CountrySnap, String>("totdeathSnap"));
+        dcaseCol.setCellValueFactory(new PropertyValueFactory<CountrySnap, String>("newcaseSnap"));
+        try {
+            covidTableView.setItems(getCountry());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
 
         addUserButton.setVisible(false);
 
@@ -192,6 +238,11 @@ public class mainpageController implements Initializable{
         saveButton.setOnAction((event)->{
             String userInput = countryName.getText();
             saveCountry(userInput, apiurl, apikey, hostname, rdbusername, rdbpassword);
+            try {
+                covidTableView.setItems(getCountry());
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         });
 
 

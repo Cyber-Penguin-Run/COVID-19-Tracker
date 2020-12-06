@@ -64,7 +64,7 @@ public class loginController implements Initializable {
             for (int i = 0; i <= userList.size(); i++){
                 if (usernameText.getText().equals(userList.get(i)) && passwordText.getText().equals(passwordList.get(i))){
                     User user = new User();
-                    user.setUserId(useridList.get(i));
+                    user.setUserId(UUID.fromString(useridList.get(i)));
                     user.setName(userList.get(i));
                     user.setPass(passwordList.get(i));
                     user.setAdminRights(adminList.get(i));
@@ -82,6 +82,11 @@ public class loginController implements Initializable {
                     invalidLogAlert.show();
                 }
             }
+            //closing connections
+            rsUser.close();
+            logstmt.close();
+            logConn.close();
+
 
         }catch(Exception ex){
             Alert serverError = new Alert(Alert.AlertType.ERROR);
@@ -90,7 +95,7 @@ public class loginController implements Initializable {
         }
     }
 
-    //Method to change to another scene, credit to Jaret Wright on Youtube.
+    //Method to change to another scene, inspired by Jaret Wright on Youtube.
     @FXML
     private void sceneChange(ActionEvent event) throws IOException {
         FXMLLoader userLoader = new FXMLLoader();

@@ -20,13 +20,13 @@
             <Font size="16.0" />
          </font>
       </JFXButton>
-      <TableView fx:id="covidTableView" layoutX="24.0" layoutY="21.0" prefHeight="272.0" prefWidth="952.0">
+      <TableView fx:id="covidTableView" layoutX="53.0" layoutY="14.0" prefHeight="272.0" prefWidth="905.0">
         <columns>
-          <TableColumn prefWidth="155.0" text="Country" />
-            <TableColumn prefWidth="155.0" text="Date" />
-          <TableColumn prefWidth="184.0" text="Total Cases" />
-            <TableColumn prefWidth="195.0" text="Total Deaths" />
-            <TableColumn prefWidth="214.0" text="Daily Cases" />
+          <TableColumn fx:id="countryCol" prefWidth="155.0" text="Country" />
+            <TableColumn fx:id="dateCol" prefWidth="155.0" text="Date" />
+          <TableColumn fx:id="totcaseCol" prefWidth="184.0" text="Total Cases" />
+            <TableColumn fx:id="totdeathCol" prefWidth="195.0" text="Total Deaths" />
+            <TableColumn fx:id="dcaseCol" prefWidth="214.0" text="Daily Cases" />
         </columns>
       </TableView>
       <GridPane layoutX="24.0" layoutY="299.0" prefHeight="167.0" prefWidth="299.0">

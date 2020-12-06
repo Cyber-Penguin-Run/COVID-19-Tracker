@@ -3,12 +3,12 @@ package sample.Models;
 import java.util.UUID;
 
 public class User {
-    private String userId;
+    private UUID userId;
     private String name;
     private String pass;
     private boolean adminRights;
 
-    public User(String userId, String name, String pass, boolean adminRights){
+    public User(UUID userId, String name, String pass, boolean adminRights){
         this.userId = userId;
         this.name = name;
         this.pass = pass;
@@ -17,11 +17,11 @@ public class User {
 
     public User(){}
 
-    public String getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
