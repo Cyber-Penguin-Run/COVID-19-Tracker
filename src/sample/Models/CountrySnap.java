@@ -1,14 +1,18 @@
 package sample.Models;
 import javafx.beans.property.SimpleStringProperty;
 
+import java.util.UUID;
+
 public class CountrySnap {
+    private UUID countryID;
     private SimpleStringProperty countrySnap;
     private SimpleStringProperty dateSnap;
     private SimpleStringProperty totcaseSnap;
     private SimpleStringProperty totdeathSnap;
     private SimpleStringProperty newcaseSnap;
 
-    public CountrySnap(String countrySnap, String dateSnap, String totcaseSnap, String totdeathSnap, String newcaseSnap) {
+    public CountrySnap(UUID countryID, String countrySnap, String dateSnap, String totcaseSnap, String totdeathSnap, String newcaseSnap) {
+        this.countryID = countryID;
         this.countrySnap = new SimpleStringProperty(countrySnap);
         this.dateSnap = new SimpleStringProperty(dateSnap);
         this.totcaseSnap = new SimpleStringProperty(totcaseSnap);
@@ -18,6 +22,14 @@ public class CountrySnap {
 
     public CountrySnap(){
 
+    }
+
+    public UUID getCountryID() {
+        return countryID;
+    }
+
+    public void setCountryID(UUID countryID) {
+        this.countryID = countryID;
     }
 
     public String getCountrySnap() {

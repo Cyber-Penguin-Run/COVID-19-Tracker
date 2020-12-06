@@ -15,6 +15,7 @@ import sample.Models.Country;
 import sample.Models.CountrySnap;
 import sample.Models.User;
 
+import javax.xml.transform.Result;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -26,15 +27,15 @@ import java.util.ResourceBundle;
 import java.util.UUID;
 
 
-public class mainpageController implements Initializable{
+public class mainpageController implements Initializable {
 
     //Strings to use to connect to the AWS MySQL server.
     final String hostname = "jdbc:mysql://class3368.c3qkvsmzsjaa.us-east-1.rds.amazonaws.com:3306/CovidTrack";
     final String rdbusername = "admin";
-    final String rdbpassword ="IAmNotAdmin169!";
+    final String rdbpassword = "IAmNotAdmin169!";
 
     //Strings to REQUEST from API
-    String apiurl ="https://covid-19-tracking.p.rapidapi.com/v1/";
+    String apiurl = "https://covid-19-tracking.p.rapidapi.com/v1/";
     String apikey = "af085016f0mshb822eda0980b34fp1265d5jsne7d490a3ea89";
 
     //Labels from mainpage.fxml
@@ -53,12 +54,12 @@ public class mainpageController implements Initializable{
     //Buttons from mainpage.fxml
     @FXML
     private Button searchButton;
-
     @FXML
     private Button addUserButton;
-
     @FXML
     private Button saveButton;
+    @FXML
+    private Button deleteButton;
 
     //Textfield from mainpage.fxml
     @FXML
@@ -68,6 +69,8 @@ public class mainpageController implements Initializable{
     @FXML
     private TableView<CountrySnap> covidTableView;
 
+    @FXML
+    private TableColumn<CountrySnap, UUID> idCol;
     @FXML
     private TableColumn<CountrySnap, String> countryCol;
     @FXML
@@ -88,20 +91,20 @@ public class mainpageController implements Initializable{
             httpCon.setRequestProperty("x-rapidapi-key", apikey);
             int responseCode = httpCon.getResponseCode();
 
-            System.out.println("Sending GET request to "+url+uInput);
-            System.out.println("Response Code "+responseCode);
+            System.out.println("Sending GET request to " + url + uInput);
+            System.out.println("Response Code " + responseCode);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
-            while((inputLine = in.readLine())!=null){
+            while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
             in.close();
             //end of credit
 
             //Creating Objects
-            JSONObject countryresponse= new JSONObject(response.toString());
+            JSONObject countryresponse = new JSONObject(response.toString());
 
             //Setting lables to JSON key values.
             countryLable.setText(countryresponse.getString("Country_text"));
@@ -111,7 +114,7 @@ public class mainpageController implements Initializable{
             dcaseLable.setText(countryresponse.getString("New Cases_text"));
 
 
-        }catch (Exception e){
+        } catch (Exception e) {
             Alert invalidCountry = new Alert(Alert.AlertType.ERROR);
             invalidCountry.setTitle("Error");
             invalidCountry.setHeaderText("Must provide country name.");
@@ -119,12 +122,10 @@ public class mainpageController implements Initializable{
         }
 
 
-
-
     }
 
     //Method to Save a snapshot of the JSON GET.
-    private void saveCountry(String uInput, String apiurl, String apikey, String sqlurl, String username, String password){
+    private void saveCountry(String uInput, String apiurl, String apikey, String sqlurl, String username, String password) {
         //GET request from API and creating country object.
         try {
             //Credit to jinu jawad m on Youtube.
@@ -147,7 +148,7 @@ public class mainpageController implements Initializable{
 
             //Creating country object.
             Country searchCountry = new Country();
-            JSONObject countryresponse= new JSONObject(response.toString());
+            JSONObject countryresponse = new JSONObject(response.toString());
 
             //Inserting values into Country object
             searchCountry.setCountryid(UUID.randomUUID());
@@ -159,16 +160,16 @@ public class mainpageController implements Initializable{
 
             //Connecting to SQL database and getting the pre-made user UUID.
             Connection conn = (Connection) DriverManager.getConnection(sqlurl, username, password);
-            Statement stmt = (Statement)conn.createStatement();
+            Statement stmt = (Statement) conn.createStatement();
             String selectUserID = "SELECT UserId FROM Users";
             ResultSet rs = stmt.executeQuery(selectUserID);
             User user = new User();
-            while(rs.next()) {
+            while (rs.next()) {
                 user.setUserId(UUID.fromString(rs.getString(1)));
             }
 
-            //Inserting objects from list to table. Credit to Alvin Alexander on alvinalexander.com
-            String query = " insert into CovidCount (Id, CountryName, Date, TotalCases, TotalDeaths, NewCases, UserId)"
+            //Inserting objects from list to table. Inspired by Alvin Alexander on alvinalexander.com
+            String query = "insert into CovidCount (Id, CountryName, Date, TotalCases, TotalDeaths, NewCases, UserId)"
                     + " values (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pStmt = (PreparedStatement) conn.prepareStatement(query);
             pStmt.setString(1, searchCountry.getCountryid().toString());
@@ -186,10 +187,10 @@ public class mainpageController implements Initializable{
             stmt.close();
             conn.close();
 
-        }catch(Exception e){
+        } catch (Exception e) {
             Alert invalidCountry = new Alert(Alert.AlertType.ERROR);
-            invalidCountry.setTitle("Error");
-            invalidCountry.setHeaderText("Must provide country name.");
+            invalidCountry.setTitle("Empty Field");
+            invalidCountry.setHeaderText("Please Enter a country name.");
             invalidCountry.show();
         }
 
@@ -200,15 +201,37 @@ public class mainpageController implements Initializable{
     public ObservableList<CountrySnap> getCountry() throws SQLException {
         ObservableList<CountrySnap> countries = FXCollections.observableArrayList();
         Connection conn = (Connection) DriverManager.getConnection(hostname, rdbusername, rdbpassword);
-        Statement stmt = (Statement)conn.createStatement();
+        Statement stmt = (Statement) conn.createStatement();
         String selectdata = "SELECT * FROM CovidCount";
         ResultSet rs = stmt.executeQuery(selectdata);
-        while(rs.next()){
-            countries.add(new CountrySnap(rs.getString("CountryName"),rs.getString("Date"),rs.getString("TotalCases"),rs.getString("TotalDeaths"), rs.getString("NewCases")));
+        while (rs.next()) {
+            UUID dataID = UUID.fromString(rs.getString("Id"));
+            countries.add(new CountrySnap(dataID,rs.getString("CountryName"), rs.getString("Date"), rs.getString("TotalCases"), rs.getString("TotalDeaths"), rs.getString("NewCases")));
         }
-
-
+        rs.close();
+        stmt.close();
+        conn.close();
         return countries;
+    }
+
+    //Method to delete selected item off database. Inspired by James D from Stackoverflow.
+    private void deleteSelected(UUID id) {
+        try {
+            Connection conn = (Connection) DriverManager.getConnection(hostname, rdbusername, rdbpassword);
+            String deleteSelectItem = "DELETE FROM CovidCount WHERE Id=?";
+            PreparedStatement pstmt = (PreparedStatement) conn.prepareStatement(deleteSelectItem);
+            pstmt.setString(1, id.toString());
+            pstmt.executeUpdate();
+
+            pstmt.close();
+            conn.close();
+
+        }catch(Exception e) {
+            Alert noSelected = new Alert(Alert.AlertType.ERROR);
+            noSelected.setTitle("Lost Connection");
+            noSelected.setHeaderText("Please reconnect to the MySQL Database.");
+            noSelected.show();
+        }
     }
 
 
@@ -216,6 +239,7 @@ public class mainpageController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        idCol.setCellValueFactory(new PropertyValueFactory<CountrySnap, UUID>("countryID"));
         countryCol.setCellValueFactory(new PropertyValueFactory<CountrySnap, String>("countrySnap"));
         dateCol.setCellValueFactory(new PropertyValueFactory<CountrySnap, String>("dateSnap"));
         totcaseCol.setCellValueFactory(new PropertyValueFactory<CountrySnap, String>("totcaseSnap"));
@@ -231,8 +255,15 @@ public class mainpageController implements Initializable{
         addUserButton.setVisible(false);
 
         searchButton.setOnAction((event)->{
-            String userInput = countryName.getText();
-            readJson(userInput, apiurl, apikey );
+            try {
+                String userInput = countryName.getText();
+                readJson(userInput, apiurl, apikey);
+            }catch(Exception e){
+                Alert empty = new Alert(Alert.AlertType.ERROR);
+                empty.setTitle("Empty Field");
+                empty.setHeaderText("Please Enter a country name.");
+                empty.show();
+            }
         });
 
         saveButton.setOnAction((event)->{
@@ -245,6 +276,19 @@ public class mainpageController implements Initializable{
             }
         });
 
+        deleteButton.setOnAction((event)->{
+            try {
+                CountrySnap selectedItem = covidTableView.getSelectionModel().getSelectedItem();
+                deleteSelected(selectedItem.getCountryID());
+                covidTableView.getItems().remove(selectedItem);
+            }catch(Exception e){
+                Alert noSelected = new Alert(Alert.AlertType.ERROR);
+                noSelected.setTitle("No item selected.");
+                noSelected.setHeaderText("Please select a row from the table.");
+                noSelected.show();
+            }
+
+        });
 
     }
 }

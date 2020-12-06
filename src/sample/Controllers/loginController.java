@@ -58,9 +58,9 @@ public class loginController implements Initializable {
                 adminList.add(rsUser.getBoolean("Administrator"));
             }
             //End of credit to Bart1612 from Stackoverflow.
-            System.out.println(userList);
-            System.out.println(passwordList);
-            System.out.println(adminList);
+            //testing what the object has System.out.println(userList);
+            //testing what the object has System.out.println(passwordList);
+            //testing what the object has System.out.println(adminList);
             for (int i = 0; i <= userList.size(); i++){
                 if (usernameText.getText().equals(userList.get(i)) && passwordText.getText().equals(passwordList.get(i))){
                     User user = new User();
@@ -73,7 +73,7 @@ public class loginController implements Initializable {
                     successAlert.setHeaderText("You have logged in. Please click \"Continue\".");
                     successAlert.show();
                     continButton.setVisible(true);
-                    System.out.println(user.getUserId());
+                    //testing what the object has System.out.println(user.getUserId());
                 }
                 else{
                     Alert invalidLogAlert = new Alert(Alert.AlertType.ERROR);
@@ -101,7 +101,7 @@ public class loginController implements Initializable {
         FXMLLoader userLoader = new FXMLLoader();
         userLoader.setLocation(getClass().getResource("../Scenes/mainpage.fxml"));
         Parent covidTrackParent = userLoader.load();
-        Scene covidTrackScene = new Scene(covidTrackParent,1011, 529);
+        Scene covidTrackScene = new Scene(covidTrackParent,1124, 529);
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setTitle("Covid Tracker Main Page");
         window.setScene(covidTrackScene);
