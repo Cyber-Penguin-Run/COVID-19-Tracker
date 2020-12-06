@@ -7,18 +7,17 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="593.0" prefWidth="702.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controllers.graphController">
    <children>
-      <BarChart layoutX="22.0" layoutY="14.0" prefHeight="453.0" prefWidth="659.0">
+      <BarChart fx:id="caseChart" layoutX="14.0" layoutY="7.0" prefHeight="503.0" prefWidth="664.0" title="Total Cases By Country">
         <xAxis>
-          <CategoryAxis side="BOTTOM" />
+          <CategoryAxis label="Country Names" side="BOTTOM" fx:id="x" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" />
+          <NumberAxis fx:id="y" label="Case Numbers" side="LEFT" />
         </yAxis>
       </BarChart>
-      <JFXButton fx:id="backButton" layoutX="22.0" layoutY="506.0" onAction="#sceneChange" prefHeight="37.0" prefWidth="147.0" ripplerFill="WHITE" style="-fx-background-color: Gray;" text="&lt; Main Menu" textFill="WHITE">
+      <JFXButton fx:id="backButton" layoutX="14.0" layoutY="529.0" onAction="#sceneChange" prefHeight="37.0" prefWidth="147.0" ripplerFill="WHITE" style="-fx-background-color: Gray;" text="&lt; Main Menu" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>

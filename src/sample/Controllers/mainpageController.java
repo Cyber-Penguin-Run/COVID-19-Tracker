@@ -20,7 +20,6 @@ import sample.Models.Country;
 import sample.Models.CountrySnap;
 import sample.Models.User;
 
-import javax.xml.transform.Result;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,8 +40,8 @@ public class mainpageController implements Initializable {
     final String rdbpassword = "IAmNotAdmin169!";
 
     //Strings to REQUEST from API
-    String apiurl = "https://covid-19-tracking.p.rapidapi.com/v1/";
-    String apikey = "af085016f0mshb822eda0980b34fp1265d5jsne7d490a3ea89";
+    final String apiurl = "https://covid-19-tracking.p.rapidapi.com/v1/";
+    final String apikey = "af085016f0mshb822eda0980b34fp1265d5jsne7d490a3ea89";
 
     //Labels from mainpage.fxml
     @FXML
@@ -61,13 +60,9 @@ public class mainpageController implements Initializable {
     @FXML
     private Button searchButton;
     @FXML
-    private Button addUserButton;
-    @FXML
     private Button saveButton;
     @FXML
     private Button deleteButton;
-    @FXML
-    private Button graphButton;
 
     //Textfield from mainpage.fxml
     @FXML
@@ -97,11 +92,6 @@ public class mainpageController implements Initializable {
             URL jObj = new URL(url + uInput);
             HttpURLConnection httpCon = (HttpURLConnection) jObj.openConnection();
             httpCon.setRequestProperty("x-rapidapi-key", apikey);
-            int responseCode = httpCon.getResponseCode();
-
-            System.out.println("Sending GET request to " + url + uInput);
-            System.out.println("Response Code " + responseCode);
-
             BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
@@ -113,6 +103,7 @@ public class mainpageController implements Initializable {
 
             //Creating Objects
             JSONObject countryresponse = new JSONObject(response.toString());
+
 
             //Setting lables to JSON key values.
             countryLable.setText(countryresponse.getString("Country_text"));
@@ -141,10 +132,6 @@ public class mainpageController implements Initializable {
             HttpURLConnection httpCon = (HttpURLConnection) jObj.openConnection();
             httpCon.setRequestProperty("x-rapidapi-key", apikey);
             int responseCode = httpCon.getResponseCode();
-
-            System.out.println("Sending GET request to " + apiurl + uInput);
-            System.out.println("Response Code " + responseCode);
-
             BufferedReader in = new BufferedReader(new InputStreamReader(httpCon.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
@@ -163,8 +150,17 @@ public class mainpageController implements Initializable {
             searchCountry.setName(countryresponse.getString("Country_text"));
             searchCountry.setDate(String.valueOf(java.time.LocalDate.now()));
             searchCountry.setTotCase(countryresponse.getString("Total Cases_text"));
+            if (searchCountry.getTotCase().equals("")){
+                searchCountry.setTotCase("0");
+            }
             searchCountry.setTotDeaths(countryresponse.getString("Total Deaths_text"));
+            if (searchCountry.getTotDeaths().equals("")){
+                searchCountry.setTotDeaths("0");
+            }
             searchCountry.setNewCase(countryresponse.getString("New Cases_text"));
+            if (searchCountry.getNewCase().equals("")){
+                searchCountry.setNewCase("0");
+            }
 
             //Connecting to SQL database and getting the pre-made user UUID.
             Connection conn = (Connection) DriverManager.getConnection(sqlurl, username, password);
@@ -272,8 +268,6 @@ public class mainpageController implements Initializable {
             throwables.printStackTrace();
         }
 
-
-        addUserButton.setVisible(false);
 
         searchButton.setOnAction((event)->{
             try {
