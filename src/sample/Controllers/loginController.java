@@ -33,9 +33,9 @@ public class loginController implements Initializable {
     private PasswordField passwordText;
 
     //Strings to use to connect to the AWS MySQL server.
-    final String hostname = "jdbc:mysql://class3368.c3qkvsmzsjaa.us-east-1.rds.amazonaws.com:3306/CovidTrack";
-    final String rdbusername = "admin";
-    final String rdbpassword ="IAmNotAdmin169!";
+    final String hostname = "";
+    final String rdbusername = "";
+    final String rdbpassword ="";
 
 
 
