@@ -1,3 +1,4 @@
+*WARNING: This is made for a class project.*
 Java version:
 jdk-12.0.2
 
