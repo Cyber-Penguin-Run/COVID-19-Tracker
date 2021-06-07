@@ -35,13 +35,13 @@ import java.util.UUID;
 public class mainpageController implements Initializable {
 
     //Strings to use to connect to the AWS MySQL server.
-    final String hostname = "jdbc:mysql://class3368.c3qkvsmzsjaa.us-east-1.rds.amazonaws.com:3306/CovidTrack";
-    final String rdbusername = "admin";
-    final String rdbpassword = "IAmNotAdmin169!";
+    final String hostname = "";
+    final String rdbusername = "";
+    final String rdbpassword = "";
 
     //Strings to REQUEST from API
-    final String apiurl = "https://covid-19-tracking.p.rapidapi.com/v1/";
-    final String apikey = "af085016f0mshb822eda0980b34fp1265d5jsne7d490a3ea89";
+    final String apiurl = "";
+    final String apikey = "";
 
     //Labels from mainpage.fxml
     @FXML
