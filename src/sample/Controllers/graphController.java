@@ -24,9 +24,9 @@ import java.util.ResourceBundle;
 
 public class graphController implements Initializable {
     //Strings to use to connect to the AWS MySQL server.
-    final String hostname = "jdbc:mysql://class3368.c3qkvsmzsjaa.us-east-1.rds.amazonaws.com:3306/CovidTrack";
-    final String rdbusername = "admin";
-    final String rdbpassword = "IAmNotAdmin169!";
+    final String hostname = "";
+    final String rdbusername = "";
+    final String rdbpassword = "";
 
     //Elements of the chart from bargraph.fxml.
     @FXML
@@ -42,7 +42,7 @@ public class graphController implements Initializable {
         //Connecting to SQL database and getting the pre-made user UUID.
         Connection conn = (Connection) DriverManager.getConnection(sqlurl, username, password);
         Statement stmt = (Statement) conn.createStatement();
-        String selectAll = "SELECT * FROM CovidCount";;
+        String selectAll = "SELECT * FROM CovidCount";
         ResultSet rs = stmt.executeQuery(selectAll);
         XYChart.Series nameSet = new XYChart.Series<>();
         Country country = new Country();
